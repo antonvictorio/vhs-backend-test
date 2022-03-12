@@ -6,6 +6,8 @@ defmodule Vhs.DelayNotif do
   alias Vhs.Transactions
   alias Vhs.Clients.Slack
 
+  @delay_notification 120 # seconds
+
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, %{})
   end
@@ -19,7 +21,7 @@ defmodule Vhs.DelayNotif do
     Enum.map(Transactions.value, fn(%{delay_flag: delay_flag} = transaction) ->
       case delay_flag do
          false ->
-          if DateTime.diff(DateTime.utc_now(), transaction.inserted_at) >= 10 do
+          if DateTime.diff(DateTime.utc_now(), transaction.inserted_at) >= @delay_notification do
             Slack.webhook_post(%{
                 "hash" => transaction.hash,
                 "status" => "Delayed"
