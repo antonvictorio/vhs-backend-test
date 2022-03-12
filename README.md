@@ -1,3 +1,5 @@
+## WIP
+
 ## Run the following commands inside the root folder for docker setup
 - MIX_ENV=prod mix release
 - docker build -t vhs . 
