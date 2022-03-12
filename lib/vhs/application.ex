@@ -8,7 +8,9 @@ defmodule Vhs.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Plug.Cowboy, scheme: :http, plug: Vhs.Router, options: [port: 4000]}
+      {Plug.Cowboy, scheme: :http, plug: Vhs.Router, options: [port: 4000]},
+      {Vhs.Transactions, []},
+      Vhs.DelayNotif
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -14,3 +14,7 @@ You can run a `ngrok http 4000` to make the webhook on Blocknative work. Note th
 
 In the same config file the `:username` key needs to be set for the app to launch.
 
+## Run the following commands inside the root folder for docker setup
+- MIX_ENV=prod mix release
+- docker build -t vhs . 
+- docker run --name vhs -d --publish 4000:4000 vhs:latest

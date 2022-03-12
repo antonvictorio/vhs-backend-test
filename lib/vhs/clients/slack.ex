@@ -45,7 +45,7 @@ defmodule Vhs.Clients.Slack do
               text: %{
                 type: "mrkdwn",
                 text:
-                  "<https://etherscan.com/tx/#{chain_response["hash"]}|Etherscan> :male-detective:"
+                  "<https://kovan.etherscan.io/tx/#{chain_response["hash"]}|Etherscan> :male-detective:"
               }
             }
           ]

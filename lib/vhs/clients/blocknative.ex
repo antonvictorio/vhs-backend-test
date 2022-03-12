@@ -13,7 +13,12 @@ defmodule Vhs.Clients.Blocknative do
 
   @impl true
   def watch_tx(body) do
-    case Vhs.HTTP.post("/transaction", body, @client_config) do
+    request_body = 
+      @client_config
+      |> Map.drop([:base_url])
+      |> Map.put(:hash, body["hash"])
+
+    case Vhs.HTTP.post("/transaction", request_body, @client_config) do
       {:ok, response} ->
         {:ok, response}
 
