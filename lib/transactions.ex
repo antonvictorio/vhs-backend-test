@@ -1,4 +1,7 @@
 defmodule Vhs.Transactions do
+  @moduledoc """
+  Agent to store pending transactions, holds data within the state
+  """
 
   use Agent
 

@@ -1,4 +1,9 @@
 defmodule Vhs.DelayNotif do
+  @moduledoc """
+  Genserver background process that will run every second
+
+  This will check for delayed pending transactions
+  """
 
   use GenServer
   require Logger
@@ -6,7 +11,7 @@ defmodule Vhs.DelayNotif do
   alias Vhs.Transactions
   alias Vhs.Clients.Slack
 
-  @delay_notification 120 # seconds
+  @delay_notification 120
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, %{})
@@ -18,18 +23,16 @@ defmodule Vhs.DelayNotif do
   end
 
   def handle_info(:work, state) do
-    Enum.map(Transactions.value, fn(%{delay_flag: delay_flag} = transaction) ->
-      case delay_flag do
-         false ->
-          if DateTime.diff(DateTime.utc_now(), transaction.inserted_at) >= @delay_notification do
-            Slack.webhook_post(%{
-                "hash" => transaction.hash,
-                "status" => "Delayed"
-              })
-            Transactions.update_flag(transaction.hash)
-          end
-         _ ->
-          nil  
+    Transactions.value
+    |> Enum.each(fn(%{delay_flag: delay_flag} = transaction) ->
+      if !delay_flag do
+        if DateTime.diff(DateTime.utc_now(), transaction.inserted_at) >= @delay_notification do
+          Slack.webhook_post(%{
+              "hash" => transaction.hash,
+              "status" => "Delayed"
+            })
+          Transactions.update_flag(transaction.hash)
+        end
       end 
     end)
 
@@ -38,7 +41,7 @@ defmodule Vhs.DelayNotif do
   end
 
   defp schedule_work() do
-    Process.send_after(self(), :work, 1000) # Every second
+    Process.send_after(self(), :work, 1000)
   end
 
 end
