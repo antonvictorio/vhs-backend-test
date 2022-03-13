@@ -18,7 +18,7 @@ defmodule Vhs.Router do
 
   post "/blocknative/watch" do
     case Blocknative.watch_tx(conn.body_params) do
-      {:ok, _} ->
+      {:ok} ->
         conn
         |> put_resp_content_type("application/json")
         |> resp(200, Jason.encode!(%{status: "ok"}))
