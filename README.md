@@ -27,6 +27,10 @@
   }
 ```
 
+### Get current pending transactions
+  - Endpoint (GET)
+    -  http://localhost:4000/transactions/pending
+
 ## Docker setup (optional)
 - MIX_ENV=prod mix release
 - docker build -t vhs . 
