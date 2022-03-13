@@ -1,10 +1,33 @@
-## WIP
+## Setup
+### Ngrok installation and setup
+- download ngrok
+  - https://ngrok.com/download
+- expose web server on port 4000 of your local machine to the internet
 
-## ngrok setup
-- ngrok http 4000
+  ```
+    ngrok http 4000
+  ```
 - add ngrok address webhook to block native webhooks
+  - https://explorer.blocknative.com/account  
 
-## Run the following commands inside the root folder for docker setup
+## Basic usage
+### Track transactions
+  - Endpoint (POST)
+    -  http://localhost:4000/blocknative/watch
+### Input single tx id
+```json
+  {
+    "tx_id": "SAMPLE HASH"
+  }
+```
+### Input multiple tx ids
+```json
+  {
+    "tx_id": ["HASH1", "HASH2"]
+  }
+```
+
+## Docker setup (optional)
 - MIX_ENV=prod mix release
 - docker build -t vhs . 
 - docker run --name vhs -d --publish 4000:4000 vhs:latest
